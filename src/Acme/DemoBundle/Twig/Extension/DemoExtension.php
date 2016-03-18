@@ -57,20 +57,23 @@ class DemoExtension extends \Twig_Extension
         $controller = highlight_string("<?php" . $this->getControllerCode(), true);
         $controller = str_replace('<span style="color: #0000BB">&lt;?php&nbsp;&nbsp;&nbsp;&nbsp;</span>', '&nbsp;&nbsp;&nbsp;&nbsp;', $controller);
 
+        $templateName = $template->getTemplateName();
         $template = htmlspecialchars($this->getTemplateCode($template), ENT_QUOTES, 'UTF-8');
 
         // remove the code block
         $template = str_replace('{% set code = code(_self) %}', '', $template);
+
+        $controllerClassName = get_class($this->controller[0]);
 
         return <<<EOF
 <p><strong><a name="whats-inside?">What's inside?</a></strong></p>
 
 $payumConfigHtml
 
-<p><strong>Controller Code</strong></p>
+<p><strong>Controller Code</strong> ($controllerClassName)</p>
 <pre>$controller</pre>
 
-<p><strong>Template Code</strong></p>
+<p><strong>Template Code</strong> ($templateName)</p>
 <pre>$template</pre>
 EOF;
     }
